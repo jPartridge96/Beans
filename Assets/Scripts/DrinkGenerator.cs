@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class DrinkGenerator : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class DrinkGenerator : MonoBehaviour
     // The name of the drink generated
     public string drinkName = "";
 
+    public List<string> order; 
 
     // Randomly generates a drink with modifications
     public void GenerateDrinkType()
@@ -24,11 +26,15 @@ public class DrinkGenerator : MonoBehaviour
 
         // Sets drinkType as random value
         drinkType = (DrinkType)values.GetValue(enumIndex);
-        drinkName += drinkType.ToString();
+        order.Add(drinkType.ToString());
 
         GenerateDessert();
 
-        Debug.Log(drinkName);
+        foreach (var item in order)
+        {
+            Debug.Log(item);
+        }
+       
     }
 
     // Generates hot or iced drink
@@ -42,13 +48,12 @@ public class DrinkGenerator : MonoBehaviour
 
         // Adds modification to drink name
         TempType tempType = (TempType)values.GetValue(enumIndex);
-        drinkName += " " + tempType.ToString();
+        order.Add(tempType.ToString());
     }
 
     // Generates random modifications to the drink
     private void GenerateDessert()
     {
-
         // Grabs all values of type ModificationType
         Array values = Enum.GetValues(typeof(DessertType));
 
@@ -57,7 +62,7 @@ public class DrinkGenerator : MonoBehaviour
 
         // Adds modification to drink name
         DessertType dessertType = (DessertType)values.GetValue(enumIndex);
-        drinkName += " with " + dessertType.ToString();
+        order.Add(dessertType.ToString());
     }
 }
 
