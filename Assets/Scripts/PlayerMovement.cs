@@ -3,39 +3,31 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public float turnSpeed = 5f;
-    public float gravity = 9.8f;
+    public float rotationSpeed = 5f;
 
+    private Camera playerCamera;
 
-    private CharacterController controller;
-    private Animator anim;
-
-    private Vector3 moveDirection = Vector3.zero;
-
-    void Start()
+    private void Start()
     {
-        controller = GetComponent<CharacterController>();
-        anim = GetComponent<Animator>();
+        playerCamera = FindObjectOfType<Camera>();
     }
 
-    void Update()
+    private void Update()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        // Get input direction
+        Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
 
-        Vector3 movement = new Vector3(horizontal, 0f, vertical);
-        movement = movement.normalized * moveSpeed * Time.deltaTime;
+        // Rotate towards mouse cursor
+        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-        if (controller.isGrounded)
-            moveDirection = movement;
-        else moveDirection += gravity * Vector3.down * Time.deltaTime;
-
-        if (movement != Vector3.zero)
+        if (Physics.Raycast(ray, out hit))
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), turnSpeed * Time.deltaTime);
-            controller.Move(moveDirection);
-            // anim.SetBool("isRunning", true);
+            Vector3 target = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(target - transform.position), Time.deltaTime * rotationSpeed);
         }
-        // else anim.SetBool("isRunning", false);
+
+        // Move player
+        transform.position += direction * moveSpeed * Time.deltaTime;
     }
 }
