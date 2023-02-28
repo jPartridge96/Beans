@@ -13,18 +13,19 @@ using System.Collections.Generic;
 
 public class DrinkGenerator : MonoBehaviour
 {
-    // The type of drink generated
-    public DrinkType drinkType;
-
-    // The name of the drink generated
-    public string drinkName = "";
 
     // List that contains order
-    public List<string> order; 
+    public List<string> order;
+
 
     // Randomly generates a drink with modifications
     public void GenerateDrinkType()
     {
+        order = new List<string>();
+
+        // Get cup;
+        GenerateCup();
+
         // Get temperature;
         GenerateTemperature();
 
@@ -32,18 +33,23 @@ public class DrinkGenerator : MonoBehaviour
         Array values = Enum.GetValues(typeof(DrinkType));
 
         // Creates random number between 0 and length of all enum values
-        System.Random rand = new System.Random();
-        int enumIndex = rand.Next(values.Length);
+        int enumIndex = UnityEngine.Random.Range(0, values.Length);
 
         // Sets drinkType as random value
-        drinkType = (DrinkType)values.GetValue(enumIndex);
+        DrinkType drinkType = (DrinkType)values.GetValue(enumIndex);
 
         // Add to the order
         order.Add(drinkType.ToString());
 
         // Get dessert
         GenerateDessert();
-       
+
+        // Debug
+        //string orderString = "";
+        //foreach (var item in order)
+        //    orderString += $"{item} ";
+        //Debug.Log(orderString);
+
     }
 
     // Generates hot or iced drink
@@ -76,9 +82,35 @@ public class DrinkGenerator : MonoBehaviour
 
         // Add to the order
         order.Add(dessertType.ToString());
+
+    }
+
+    // Generates random modifications to the drink
+    private void GenerateCup()
+    {
+        // Grabs all values of type ModificationType
+        Array values = Enum.GetValues(typeof(CupType));
+
+        // Creates random number between 0 and length of all enum values
+        int enumIndex = UnityEngine.Random.Range(0, values.Length);
+
+        // Adds modification to drink name
+        CupType cupType = (CupType)values.GetValue(enumIndex);
+
+        // Add to the order
+        order.Add(cupType.ToString());
+
     }
 }
 
+
+// Enum for cup type
+public enum CupType
+{
+    PINKCUP,
+    PURPLECUP,
+    BLUECUP
+}
 
 // Enum for drink type
 public enum DrinkType
