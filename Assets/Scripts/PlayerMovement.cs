@@ -34,8 +34,8 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), turnSpeed * Time.deltaTime);
             controller.Move(moveDirection);
-            anim.SetBool("isRunning", true);
+            // anim.SetBool("isRunning", true);
         }
-        else anim.SetBool("isRunning", false);
+        // else anim.SetBool("isRunning", false);
     }
 }
