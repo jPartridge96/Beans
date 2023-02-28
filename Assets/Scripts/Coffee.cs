@@ -19,10 +19,10 @@ public class Espresso : Recipe
         int rand_cup = rand.Next(0, cups.Length - 1);
 
         // Ingredients needed for espresso
-        ingredients = new List<Ingredient> {
-            new Ingredient(cups[rand_cup]),
-            new Ingredient("Espresso")
-        };
+        //ingredients = new List<Ingredient> {
+        //    new Ingredient(cups[rand_cup]),
+        //    new Ingredient("Espresso")
+        //};
     }
 }
 
