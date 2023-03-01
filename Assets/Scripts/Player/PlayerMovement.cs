@@ -5,6 +5,8 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     public float rotationSpeed = 5f;
 
+    private Animator anim;
+
     private Camera playerCamera;
     private CharacterController controller;
 
@@ -12,12 +14,24 @@ public class PlayerMovement : MonoBehaviour
     {
         playerCamera = FindObjectOfType<Camera>();
         controller = GetComponent<CharacterController>();
+        anim = GetComponent<Animator>();    
     }
 
     private void Update()
     {
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
         // Get input direction
-        Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+
+        if (direction.magnitude > 0.1)
+        {
+            anim.SetBool("isRunning", true);
+        }
+        else
+        {
+            anim.SetBool("isRunning", false);
+        }
 
         // Rotate towards mouse cursor
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
@@ -32,4 +46,5 @@ public class PlayerMovement : MonoBehaviour
         // Move player
         controller.Move(direction * moveSpeed * Time.deltaTime);
     }
+
 }
