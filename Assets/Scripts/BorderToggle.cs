@@ -10,19 +10,19 @@ public class BorderToggle : MonoBehaviour
     void Start()
     {
         rend = GetComponent<Renderer>();  // Get the renderer component
-        originalShader = rend.material.shader;  // Store the original shader
+        originalShader = rend.materials[1].shader;  // Store the original shader
     }
 
     void OnMouseEnter()
     {
         isHovering = true;  // Set the flag to indicate that the mouse is hovering
-        rend.material.shader = Shader.Find("Standard");  // Remove the border shader
+        rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader_Highlighted");  // Remove the border shader
     }
 
     void OnMouseExit()
     {
-        //isHovering = false;  // Reset the flag to indicate that the mouse is no longer hovering
-        rend.material.shader = originalShader;  // Restore the original shader
+        isHovering = false;  // Reset the flag to indicate that the mouse is no longer hovering
+        rend.materials[1].shader = originalShader;  // Restore the original shader
     }
 
     void Update()
