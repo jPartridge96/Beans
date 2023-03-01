@@ -6,10 +6,12 @@ public class PlayerMovement : MonoBehaviour
     public float rotationSpeed = 5f;
 
     private Camera playerCamera;
+    private CharacterController controller;
 
     private void Start()
     {
         playerCamera = FindObjectOfType<Camera>();
+        controller = GetComponent<CharacterController>();
     }
 
     private void Update()
@@ -28,6 +30,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Move player
-        transform.position += direction * moveSpeed * Time.deltaTime;
+        controller.Move(direction * moveSpeed * Time.deltaTime);
     }
 }
