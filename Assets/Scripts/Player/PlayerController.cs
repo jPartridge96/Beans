@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     private AnimationClip[] animationList;
     private bool isDead = false;
 
+    public GameObject grabPoint;
+
     private void Start()
     {
         animator = GetComponent<Animator>();

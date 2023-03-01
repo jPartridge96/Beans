@@ -5,30 +5,62 @@ public class BorderToggle : MonoBehaviour
     
     private Renderer rend;  // The renderer component of the object
     private Shader originalShader;  // The original shader of the object
-    private bool isHovering;  // A flag to track whether the mouse is hovering over the object
+    private Transform grabPointTransform;
+    private Rigidbody rb;
+
+    private float interactRange = 1.5f;
+    private float smoothing = 10f;
 
     void Start()
     {
         rend = GetComponent<Renderer>();  // Get the renderer component
+        rb = GetComponent<Rigidbody>();
         originalShader = rend.materials[1].shader;  // Store the original shader
+    }
+
+    void FixedUpdate()
+    {
+        if(grabPointTransform != null)
+        {
+            Vector3 newPos = Vector3.Lerp(transform.position, grabPointTransform.position, Time.deltaTime * smoothing);
+            Quaternion newRot = Quaternion.Lerp(transform.rotation, grabPointTransform.rotation, Time.deltaTime * smoothing);
+
+            rb.MovePosition(newPos);
+            rb.MoveRotation(newRot);
+        }  
     }
 
     void OnMouseEnter()
     {
-        isHovering = true;  // Set the flag to indicate that the mouse is hovering
-        rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader_Highlighted");  // Remove the border shader
+        // Enable outline
+        if (inRange())
+            rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader_Highlighted");  // Remove the border shader
     }
 
     void OnMouseExit()
     {
-        isHovering = false;  // Reset the flag to indicate that the mouse is no longer hovering
         rend.materials[1].shader = originalShader;  // Restore the original shader
     }
 
-    void Update()
+    void OnMouseDown()
     {
-        if (isHovering)
-        {
-        }
+        if (inRange())
+            GrabObject(GameObject.Find("GrabPoint"));
+    }
+
+    public void GrabObject(GameObject gameObject)
+    {
+        grabPointTransform = gameObject.transform;
+        rb.useGravity = false;
+    }
+
+    public bool inRange()
+    {
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, interactRange, transform.forward);
+        foreach (RaycastHit hit in hits)
+            if (hit.collider.gameObject.name == "Player")
+                return true;
+
+        return false;
     }
 }
