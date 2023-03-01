@@ -8,8 +8,9 @@ public class BorderToggle : MonoBehaviour
     private Transform grabPointTransform;
     private Rigidbody rb;
 
+    private bool canInteract = true;
     private float interactRange = 1.5f;
-    private float smoothing = 10f;
+    private float smoothing = 20f;
 
     void Start()
     {
@@ -33,7 +34,7 @@ public class BorderToggle : MonoBehaviour
     void OnMouseEnter()
     {
         // Enable outline
-        if (inRange())
+        if (inRange() && canInteract)
             rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader_Highlighted");  // Remove the border shader
     }
 
@@ -52,6 +53,7 @@ public class BorderToggle : MonoBehaviour
     {
         grabPointTransform = gameObject.transform;
         rb.useGravity = false;
+        canInteract = false;
     }
 
     public bool inRange()
