@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private AnimationClip[] animationList;
     private bool isDead = false;
+    public bool canHold = true;
 
     public GameObject grabPoint;
 

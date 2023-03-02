@@ -9,18 +9,22 @@ using UnityEngine;
 
 public class BorderToggle : MonoBehaviour
 {
-    
+
+    [SerializeField] private bool canPickUp;
+    [SerializeField] private bool throwAway;
     private Renderer rend;  // The renderer component of the object
     private Shader originalShader;  // The original shader of the object
     private Transform grabPointTransform;
     private Rigidbody rb;
 
     private bool canInteract = true;
+    private PlayerController playerController;
     private float interactRange = 1.5f;
     private float smoothing = 20f;
 
     void Start()
     {
+        playerController = GetComponent<PlayerController>();
         rend = GetComponent<Renderer>();  // Get the renderer component
         rb = GetComponent<Rigidbody>();
         originalShader = rend.materials[1].shader;  // Store the original shader
@@ -43,6 +47,8 @@ public class BorderToggle : MonoBehaviour
         // Enable outline
         if (inRange() && canInteract)
             rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader_Highlighted");  // Remove the border shader
+
+            
     }
 
     void OnMouseExit()
@@ -52,8 +58,13 @@ public class BorderToggle : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (inRange())
+        // When the object is cup
+        if (inRange() && canPickUp && playerController.canHold)
+        {
             GrabObject(GameObject.Find("GrabPoint"));
+            playerController.canHold = false;
+        }
+            
     }
 
     public void GrabObject(GameObject gameObject)
