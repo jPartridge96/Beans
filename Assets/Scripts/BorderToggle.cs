@@ -5,6 +5,7 @@ Created by: Hyunjin Kikm
 Code added by: Hyunjin Kim, Jordan Partridge
  */
 
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BorderToggle : MonoBehaviour
@@ -63,6 +64,12 @@ public class BorderToggle : MonoBehaviour
         {
             GrabObject(GameObject.Find("GrabPoint"));
             playerController.canHold = false;
+        }
+        else if(inRange() && throwAway)
+        {
+            Destroy();
+            grabPointTransform = null;
+            playerController.canHold = true;
         }
             
     }
