@@ -24,7 +24,7 @@ public class BorderToggle : MonoBehaviour
 
     void Start()
     {
-        playerController = GetComponent<PlayerController>();
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         rend = GetComponent<Renderer>();  // Get the renderer component
         rb = GetComponent<Rigidbody>();
         originalShader = rend.materials[1].shader;  // Store the original shader
