@@ -1,14 +1,14 @@
 /*
  BorderToggle.cs
 Create date: 2023.3.1
-Created by: Hyunjin Kikm
+Created by: Hyunjin Kim
 Code added by: Hyunjin Kim, Jordan Partridge
  */
 
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BorderToggle : MonoBehaviour
+public class Interactable : MonoBehaviour
 {
 
     [SerializeField] private bool canPickUp;
@@ -33,14 +33,14 @@ public class BorderToggle : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(grabPointTransform != null)
+        if (grabPointTransform != null)
         {
             Vector3 newPos = Vector3.Lerp(transform.position, grabPointTransform.position, Time.deltaTime * smoothing);
             Quaternion newRot = Quaternion.Lerp(transform.rotation, grabPointTransform.rotation, Time.deltaTime * smoothing);
 
             rb.MovePosition(newPos);
             rb.MoveRotation(newRot);
-        }  
+        }
     }
 
     void OnMouseEnter()
@@ -49,7 +49,7 @@ public class BorderToggle : MonoBehaviour
         if (inRange() && canInteract)
             rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader_Highlighted");  // Remove the border shader
 
-            
+
     }
 
     void OnMouseExit()
@@ -60,16 +60,17 @@ public class BorderToggle : MonoBehaviour
     void OnMouseDown()
     {
         // When the object is cup
-        if (inRange() && canPickUp && playerController.canHold)
+        if (inRange() && canPickUp && playerController.currentDrink == null)
         {
             GrabObject(GameObject.Find("GrabPoint"));
-            playerController.canHold = false;
+            playerController.currentDrink = gameObject;
         }
         else if(inRange() && throwAway)
         {
-           //Destroy();
+            playerController.currentDrink = null;
             grabPointTransform = null;
-            playerController.canHold = true;
+
+            Destroy(gameObject);
         }
             
     }
@@ -79,6 +80,7 @@ public class BorderToggle : MonoBehaviour
         grabPointTransform = gameObject.transform;
         rb.useGravity = false;
         canInteract = false;
+        throwAway = true;
     }
 
     public bool inRange()

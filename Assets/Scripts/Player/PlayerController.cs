@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private AnimationClip[] animationList;
     private bool isDead = false;
 
-    public bool canHold;
+    public GameObject currentDrink;
     public GameObject grabPoint;
 
     private void Start()
