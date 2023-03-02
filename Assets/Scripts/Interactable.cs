@@ -47,7 +47,7 @@ public class Interactable : MonoBehaviour
     {
         // Enable outline
         if (inRange() && canInteract)
-            rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader_Highlighted");  // Remove the border shader
+            rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader_Green");  // Remove the border shader
 
 
     }
@@ -63,7 +63,6 @@ public class Interactable : MonoBehaviour
         if (inRange() && canPickUp && playerController.currentDrink == null)
         {
             GrabObject(GameObject.Find("GrabPoint"));
-            playerController.currentDrink = gameObject;
         }
         else if(inRange() && throwAway)
         {
@@ -72,15 +71,16 @@ public class Interactable : MonoBehaviour
 
             Destroy(gameObject);
         }
-            
     }
 
-    public void GrabObject(GameObject gameObject)
+    public void GrabObject(GameObject obj)
     {
-        grabPointTransform = gameObject.transform;
+        grabPointTransform = obj.transform;
         rb.useGravity = false;
         canInteract = false;
         throwAway = true;
+
+        playerController.currentDrink = Instantiate(gameObject, transform.position, transform.rotation);
     }
 
     public bool inRange()
