@@ -1,3 +1,10 @@
+/*
+ BorderToggle.cs
+Create date: 2023.3.1
+Created by: Hyunjin Kikm
+Code added by: Hyunjin Kim, Jordan Partridge
+ */
+
 using UnityEngine;
 
 public class BorderToggle : MonoBehaviour
