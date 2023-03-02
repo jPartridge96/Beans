@@ -67,7 +67,7 @@ public class BorderToggle : MonoBehaviour
         }
         else if(inRange() && throwAway)
         {
-            Destroy();
+           //Destroy();
             grabPointTransform = null;
             playerController.canHold = true;
         }
