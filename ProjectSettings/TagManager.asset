@@ -6,11 +6,12 @@ TagManager:
   tags:
   - TrashCan
   - Pickup
+  - CafeFloor
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - CafeFloor
   - Water
   - UI
   - 
