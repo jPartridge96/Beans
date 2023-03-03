@@ -7,8 +7,6 @@ public class PlayerController : MonoBehaviour
     public float currentHealth;
 
     private Animator animator;
-    private AnimationClip[] animationList;
-    private bool isDead = false;
 
     public GameObject currentDrink;
     public GameObject grabPoint;
@@ -17,7 +15,6 @@ public class PlayerController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
-
     }
 
     private void Update()
@@ -34,26 +31,6 @@ public class PlayerController : MonoBehaviour
     private void controlAnimations()
     {
         if (Input.GetMouseButtonDown(0))
-        {
             animator.SetTrigger("pickup");
-        }
-    }
-
-
-    public void DecreaseHealth(float amount)
-    {
-        currentHealth -= amount;
-        // Update the health UI here
-        if (currentHealth <= 0 && !isDead)
-        {
-            Die();
-        }
-    }
-
-    private void Die()
-    {
-        isDead = true;
-        animator.SetBool("isDead", true);
-        // Handle player death here, such as restarting the level or showing a game over screen
     }
 }
