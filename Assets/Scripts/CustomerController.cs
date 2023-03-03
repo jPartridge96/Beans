@@ -7,14 +7,14 @@ public class CustomerController : MonoBehaviour
     private NavMeshAgent navMeshAgent;
 
     // Reference to the OrderController component
-    private OrderController orderController;
+    // private OrderController orderController;
 
     // Start is called before the first frame update
     private void Start()
     {
         // Get references to NavMeshAgent and OrderController components
         navMeshAgent = GetComponent<NavMeshAgent>();
-        orderController = GetComponent<OrderController>();
+        // orderController = GetComponent<OrderController>();
     }
 
     // Sets the destination for the NavMeshAgent component
