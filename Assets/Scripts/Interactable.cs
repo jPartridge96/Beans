@@ -14,7 +14,6 @@ public class Interactable : MonoBehaviour
     [SerializeField] private bool canPickUp;
     [SerializeField] private bool throwAway;
     private Renderer rend;  // The renderer component of the object
-    private Shader originalShader;  // The original shader of the object
     private Transform grabPointTransform;
     private Rigidbody rb;
 
@@ -28,7 +27,6 @@ public class Interactable : MonoBehaviour
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         rend = GetComponent<Renderer>();  // Get the renderer component
         rb = GetComponent<Rigidbody>();
-        originalShader = rend.materials[1].shader;  // Store the original shader
     }
 
     void FixedUpdate()
@@ -47,40 +45,42 @@ public class Interactable : MonoBehaviour
     {
         // Enable outline
         if (inRange() && canInteract)
-            rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader_Green");  // Remove the border shader
-
-
+            if(gameObject.tag == "TrashCan")
+                rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader_Red");
+            else rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader_Green");
     }
 
     void OnMouseExit()
     {
-        rend.materials[1].shader = originalShader;  // Restore the original shader
+        rend.materials[1].shader = Shader.Find("Shader Graphs/Toon_OutlineShader");  // Restore the original shader
     }
 
     void OnMouseDown()
     {
         // When the object is cup
-        if (inRange() && canPickUp && playerController.currentDrink == null)
+        if (playerController.currentDrink == null)
         {
-            GrabObject(GameObject.Find("GrabPoint"));
+            if (inRange() && canPickUp)
+                GrabObject(GameObject.Find("GrabPoint"));
         }
-        else if(inRange() && throwAway)
+        else
         {
-            playerController.currentDrink = null;
-            grabPointTransform = null;
-
-            Destroy(gameObject);
+            if (inRange() && gameObject.tag == "TrashCan" && playerController.currentDrink.GetComponent<Interactable>().throwAway)
+            {
+                Destroy(playerController.currentDrink.gameObject);
+                playerController.currentDrink = null;
+            } 
         }
     }
 
     public void GrabObject(GameObject obj)
     {
-        grabPointTransform = obj.transform;
-        rb.useGravity = false;
-        canInteract = false;
-        throwAway = true;
-
         playerController.currentDrink = Instantiate(gameObject, transform.position, transform.rotation);
+
+        Interactable drinkInteract = playerController.currentDrink.GetComponent<Interactable>();
+        drinkInteract.grabPointTransform = obj.transform;
+        drinkInteract.canInteract = false;
+        drinkInteract.throwAway = true;
     }
 
     public bool inRange()
