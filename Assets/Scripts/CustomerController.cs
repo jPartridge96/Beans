@@ -29,7 +29,7 @@ public class CustomerController : MonoBehaviour
         // If the collider is the counter, place an order
         if (other.CompareTag("Counter"))
         {
-            orderController.PlaceOrder();
+ //           orderController.PlaceOrder();
             Destroy(gameObject);
         }
     }
